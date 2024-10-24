@@ -12,7 +12,7 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
     [SerializeField] protected PieceColor color;    // The color of the piece.
 
     [SerializeField] protected bool canMove = false; // Prevents players from moving pieces out of turn.
-    [SerializeField] protected GameObject currentTile;
+    [SerializeField] public GameObject currentTile;
 
     protected RectTransform rectTransform;
     protected Invoker invoker;
@@ -20,6 +20,12 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+
+        if (currentTile != null)
+        {
+            rectTransform.SetParent(currentTile.transform);
+            rectTransform.anchoredPosition = Vector3.zero;
+        }
     }
 
     public void PlayersTurn(bool turnEnds = false)
@@ -73,8 +79,4 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
 
     // Getter to check if the piece can move
     public bool CanMove {  get { return canMove; } }
-
-    // Getter for other pieces to use to check if they are occupied.
-    public GameObject CurrentTile { get { return currentTile; }
-}
 }
