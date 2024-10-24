@@ -11,6 +11,7 @@ TagManager:
   - Queen
   - King
   - Default
+  - Tile
   layers:
   - Default
   - TransparentFX

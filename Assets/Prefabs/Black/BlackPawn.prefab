@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3603239892246679970}
   - component: {fileID: 2651806586747558290}
   m_Layer: 5
-  m_Name: WhitePawn
+  m_Name: BlackPawn
   m_TagString: Pawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ac18855fa4927cc4b86b54b1cd9df307, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b0d3e42a3237835459e3e44ea6a64d81, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementType: 3
   moveSteps: 0
-  color: 1
+  color: 0
   canMove: 0
   currentTile: {fileID: 0}
   isPromoted: 0

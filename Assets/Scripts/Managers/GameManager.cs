@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
 
     const int _BoardSize = 8;
 
+    [SerializeField] List<GameObject> _WhitePiecesPrefabs = new List<GameObject>();
+    [SerializeField] List<GameObject> _BlackPiecesPrefabs = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,9 +44,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    /*
-     * This function will fill the 2D list with each tile of the game board. This can then be used for moving the pieces.
-     */
+    // This function will fill the 2D list with each tile of the game board. This can then be used for moving the pieces.
     void GetBoardSquares()
     {
         for (int letter = 0; letter < _BoardSize; letter++)
@@ -55,6 +56,12 @@ public class GameManager : MonoBehaviour
             }
             _GameBoardSquares.Add(coordinates);
         }
+    }
+
+
+    void SetupBoard()
+    {
+
     }
 
     // Getter for the tiles that the pieces can access

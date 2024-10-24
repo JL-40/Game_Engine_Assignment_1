@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 
-public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEndDragHandler
+public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, IEndDragHandler
 {
     [SerializeField] protected MovementType movementType; // The type of movement the piece can perform.
     [SerializeField, Range(1, 8)] protected int moveSteps;  // The number of tiles the piece can move.
@@ -49,40 +49,20 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
     {
         if (canMove)
         {
-            transform.parent = null;
             rectTransform.anchoredPosition += eventData.delta;
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+/*    public void OnEndDrag(PointerEventData eventData)
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(currentTile.GetComponent<RectTransform>(), eventData.position, eventData.pressEventCamera))
         {
 
         }
-    }    
+    }    */
     /*
      * End of Interface Implementations
      */
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Tile"))
-        {
-            currentTile = collision.gameObject;
-            transform.parent = collision.transform;
-            rectTransform.anchoredPosition = Vector3.zero;
-        }
-
-        if (collision.GetComponent<BaseChessPiece>() != null)
-        {
-            if (collision.GetComponent<BaseChessPiece>().color != color)
-            {
-                Capture(collision.gameObject);
-            }
-        }    
-
-    }
 
     public void Capture(GameObject enemyPiece)
     {

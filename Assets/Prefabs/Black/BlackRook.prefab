@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 3882644756778773486}
   - component: {fileID: 5187221083010143489}
   - component: {fileID: 3603239892246679970}
-  - component: {fileID: 2651806586747558290}
+  - component: {fileID: 4774826728441731239}
   m_Layer: 5
-  m_Name: WhitePawn
-  m_TagString: Pawn
+  m_Name: BlackRook
+  m_TagString: Rook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ac18855fa4927cc4b86b54b1cd9df307, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b5d6c5efa202db7468eb160cec3e3a3c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2651806586747558290
+--- !u!114 &4774826728441731239
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,12 +85,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8475712395722443981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f242d6aa6242c6f469fd2f4a73b88307, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6bce05fbeed4340974f9e4d476dc1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementType: 3
-  moveSteps: 0
-  color: 1
+  movementType: 0
+  moveSteps: 8
+  color: 0
   canMove: 0
   currentTile: {fileID: 0}
-  isPromoted: 0
