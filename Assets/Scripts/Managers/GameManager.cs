@@ -8,8 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager _Instance;
 
-    [Range(1,2)]
-    [SerializeField] int _currentPlayerTurn = 1;
+    [SerializeField] PieceColor _currentPlayerTurn = PieceColor.Black;
 
     [SerializeField] GameObject _GameBoard;
     [SerializeField] List<List<GameObject>> _GameBoardSquares = new List<List<GameObject>>();
@@ -34,5 +33,12 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void GetBoardSquares()
+    {
+        _GameBoardSquares.Clear();
+
+
     }
 }
