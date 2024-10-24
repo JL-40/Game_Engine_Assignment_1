@@ -8,9 +8,12 @@ public class Pawn : BaseChessPiece
 
    public override void Move()
     {
-        
+
     }
 
+    /*
+     * Function that promotes the pawn into other pieces excluding the King
+     */
     public void Promote()
     {
         if (isPromoted == false)
@@ -19,20 +22,5 @@ public class Pawn : BaseChessPiece
         }
 
         // Promote pawn.
-    }
-
-    public void Selected()
-    {
-        if (canMove == false)
-        {
-            return;
-        }
-
-        isSelected = (isSelected == false ? true : false);
-
-        if (isSelected)
-        {
-           Move();
-        }
     }
 }
