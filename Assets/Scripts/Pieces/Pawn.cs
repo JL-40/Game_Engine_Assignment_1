@@ -6,14 +6,7 @@ public class Pawn : BaseChessPiece
 {
     public bool isPromoted = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+   public override void Move()
     {
         
     }
@@ -26,5 +19,20 @@ public class Pawn : BaseChessPiece
         }
 
         // Promote pawn.
+    }
+
+    public void Selected()
+    {
+        if (canMove == false)
+        {
+            return;
+        }
+
+        isSelected = (isSelected == false ? true : false);
+
+        if (isSelected)
+        {
+           Move();
+        }
     }
 }
