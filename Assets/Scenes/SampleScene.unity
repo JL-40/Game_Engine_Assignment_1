@@ -2039,20 +2039,6 @@ MonoBehaviour:
   _Canvas: {fileID: 0}
   _CurrentPlayerTurn: 0
   _GameBoard: {fileID: 1427485779}
-  _WhitePiecesPrefabs:
-  - {fileID: 8475712395722443981, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
-  - {fileID: 8475712395722443981, guid: 373bdce311cfd1f46a65c70283e19e72, type: 3}
-  - {fileID: 8475712395722443981, guid: 018dd739776519c4d9845aad98ae54c8, type: 3}
-  - {fileID: 8475712395722443981, guid: a123eeb69a88a0f46af35fe6d9f6cddf, type: 3}
-  - {fileID: 8475712395722443981, guid: 4d8f487644306b941b42035b0f07712a, type: 3}
-  - {fileID: 8475712395722443981, guid: 2c8f8845929982e48bfb5f45823c2c6c, type: 3}
-  _BlackPiecesPrefabs:
-  - {fileID: 8475712395722443981, guid: c4d1fe53f7453884e824b045b4aab786, type: 3}
-  - {fileID: 8475712395722443981, guid: 1e43f167cae02af46b6bf5d0b97a46f8, type: 3}
-  - {fileID: 8475712395722443981, guid: 555afab68fd700a4ca2d9edb0f01b0c8, type: 3}
-  - {fileID: 8475712395722443981, guid: e534864bc94dec4419eff9d33b117e01, type: 3}
-  - {fileID: 8475712395722443981, guid: a46ec0094652e0744972605f697f18f0, type: 3}
-  - {fileID: 8475712395722443981, guid: 41ede1f0a0244b044827a1a9dfa387b3, type: 3}
   _CurrentWhitePieces: []
   _CurrentBlackPieces: []
 --- !u!4 &629585216

@@ -11,7 +11,7 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
     [SerializeField, Range(1, 8)] protected int moveSteps;  // The number of tiles the piece can move.
     [SerializeField] protected PieceColor color;    // The color of the piece.
 
-    [SerializeField] protected bool canMove = false; // Prevents players from moving pieces out of turn.
+    [SerializeField] public bool canMove = false; // Prevents players from moving pieces out of turn.
     [SerializeField] public GameObject currentTile;
 
     protected RectTransform rectTransform;
@@ -76,7 +76,4 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
     }
 
     public abstract void Move();
-
-    // Getter to check if the piece can move
-    public bool CanMove {  get { return canMove; } }
 }

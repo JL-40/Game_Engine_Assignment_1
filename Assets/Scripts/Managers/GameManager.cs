@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -49,19 +50,17 @@ public class GameManager : MonoBehaviour
         // Clear out the list of pieces on the board.
         _CurrentBlackPieces.Clear();
         _CurrentWhitePieces.Clear();
+
+        _CurrentWhitePieces = GameObject.FindGameObjectsWithTag("White").ToList();
+        _CurrentBlackPieces = GameObject.FindGameObjectsWithTag("Black").ToList();
+
+        WhitePlayersTurn();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (_CurrentPlayerTurn == PieceColor.Black)
-        {
+    { 
 
-        }
-        else if (_CurrentPlayerTurn == PieceColor.White)
-        {
-
-        }
     }
 
     // This function will fill the 2D list with each tile of the game board. This can then be used for moving the pieces.
@@ -75,6 +74,36 @@ public class GameManager : MonoBehaviour
                 coordinates.Add(_GameBoard.transform.GetChild(number).gameObject);
             }
             _GameBoardSquares.Add(coordinates);
+        }
+    }
+
+    public void WhitePlayersTurn()
+    {
+        _CurrentPlayerTurn = PieceColor.White;
+
+        foreach (GameObject whitePiece in _CurrentWhitePieces)
+        {
+            whitePiece.GetComponent<BaseChessPiece>().canMove = true;
+        }
+
+        foreach (GameObject blackPiece in _CurrentBlackPieces)
+        {
+            blackPiece.GetComponent<BaseChessPiece>().canMove = false;
+        }
+    }
+
+    public void BlackPlayersTurn()
+    {
+        _CurrentPlayerTurn = PieceColor.Black;
+
+        foreach (GameObject blackPiece in _CurrentBlackPieces)
+        {
+            blackPiece.GetComponent<BaseChessPiece>().canMove = true;
+        }
+
+        foreach (GameObject whitePiece in _CurrentWhitePieces)
+        {
+            whitePiece.GetComponent<BaseChessPiece>().canMove = false;
         }
     }
 
