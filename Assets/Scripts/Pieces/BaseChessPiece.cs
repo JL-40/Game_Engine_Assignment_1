@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 
-public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, IEndDragHandler
+public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEndDragHandler
 {
     [SerializeField] protected MovementType movementType; // The type of movement the piece can perform.
     [SerializeField, Range(1, 8)] protected int moveSteps;  // The number of tiles the piece can move.
@@ -15,17 +15,21 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
     [SerializeField] public GameObject currentTile;
 
     protected RectTransform rectTransform;
+    Transform defaultParent;
+
     protected Invoker invoker;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        defaultParent = rectTransform.parent;
 
-        if (currentTile != null)
+        /*if (currentTile != null)
         {
             rectTransform.SetParent(currentTile.transform);
             rectTransform.anchoredPosition = Vector3.zero;
-        }
+            rectTransform.SetParent(defaultParent);
+        }*/
     }
 
     public void PlayersTurn(bool turnEnds = false)
@@ -55,17 +59,37 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler//, I
     {
         if (canMove)
         {
+
+            rectTransform.SetParent(FindObjectOfType<Canvas>().transform);
+
             rectTransform.anchoredPosition += eventData.delta;
         }
     }
 
-/*    public void OnEndDrag(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData eventData)
     {
-        if (RectTransformUtility.RectangleContainsScreenPoint(currentTile.GetComponent<RectTransform>(), eventData.position, eventData.pressEventCamera))
-        {
+        RaycastHit2D hit2D = Physics2D.Raycast(transform.position, Vector2.down, 1f);
 
+        if (hit2D.collider == null)
+        {
+            return;
         }
-    }    */
+
+        if (hit2D.collider.CompareTag("Tile") == true)
+        {
+            rectTransform.SetParent(hit2D.collider.transform);
+            rectTransform.anchoredPosition = Vector3.zero;
+            rectTransform.SetParent(defaultParent);
+
+            currentTile = hit2D.collider.gameObject;
+        }
+        else 
+        {
+            rectTransform.SetParent(currentTile.transform);
+            rectTransform.anchoredPosition = Vector3.zero;
+            rectTransform.SetParent(defaultParent);
+        }
+    }
     /*
      * End of Interface Implementations
      */
