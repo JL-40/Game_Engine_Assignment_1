@@ -5,6 +5,8 @@ using UnityEngine;
 public class Pawn : BaseChessPiece
 {
     public bool isPromoted = false;
+    [SerializeField] List<GameObject> promotionList = new List<GameObject>();
+
 
    public override void Move()
     {
@@ -22,5 +24,6 @@ public class Pawn : BaseChessPiece
         }
 
         // Promote pawn.
+
     }
 }

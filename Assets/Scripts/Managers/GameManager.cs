@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject _GameBoard; // Get the parent game object that holds the tiles that make up the game board.
     [SerializeField] List<List<GameObject>> _GameBoardSquares = new List<List<GameObject>>(); // A 2D list that hold all tiles making a code version of the game board.
+
+    [SerializeField] List<Dictionary<GameObject, GameObject>> _TestTileHolder = new List<Dictionary<GameObject, GameObject>>();
 
     const int _BoardSize = 8;
 
@@ -69,11 +72,14 @@ public class GameManager : MonoBehaviour
         for (int letter = 0; letter < _BoardSize; letter++)
         {
             List<GameObject> coordinates = new List<GameObject>();
+            Dictionary<GameObject, GameObject> Tile = new Dictionary<GameObject, GameObject>();
             for (int number = 0; number < _BoardSize; number++)
             {
                 coordinates.Add(_GameBoard.transform.GetChild(number).gameObject);
+                Tile.Add(_GameBoard.transform.GetChild(number).gameObject, null);
             }
             _GameBoardSquares.Add(coordinates);
+            _TestTileHolder.Add(Tile);
         }
     }
 
@@ -104,6 +110,47 @@ public class GameManager : MonoBehaviour
         foreach (GameObject whitePiece in _CurrentWhitePieces)
         {
             whitePiece.GetComponent<BaseChessPiece>().canMove = false;
+        }
+    }
+
+    /// <summary>
+    /// Finds the tile in the GameBoardSquare 2D list.
+    /// </summary>
+    /// <param name="searchTile">The tile to find.</param>
+    /// <returns>Returns the tile object if it is found. Returns null if the object is not in the list.</returns>
+    public GameObject FindTile(GameObject searchTile)
+    {
+        foreach (var coordinateList in _GameBoardSquares)
+        {
+            foreach (var coordinate in coordinateList)
+            {
+                if (searchTile.name == coordinate.name)
+                {
+                    return coordinate;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void OccupyTile(GameObject piece, bool unOccupy =  false)
+    {
+        foreach (Dictionary<GameObject, GameObject> coord in _TestTileHolder)
+        {
+            if (unOccupy)
+            {
+                coord.TryGetValue(piece, out GameObject tile);
+
+                if (tile != null)
+                {
+                    coord[tile] = null;
+                }
+                
+            }
+            else
+            {
+                coord[piece.GetComponent<BaseChessPiece>().currentTile] = piece;
+            }
         }
     }
 

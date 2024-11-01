@@ -32,6 +32,14 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         }*/
     }
 
+    private void Start()
+    {
+        GameObject tile;
+        tile = GameManager._Instance.FindTile(currentTile);
+
+        GameManager._Instance.OccupyTile(this.gameObject);
+    }
+
     public void PlayersTurn(bool turnEnds = false)
     {
         if (turnEnds && canMove)
