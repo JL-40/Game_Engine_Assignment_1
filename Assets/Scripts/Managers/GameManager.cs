@@ -16,9 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PieceColor _CurrentPlayerTurn = PieceColor.White; // Tracks which player's turn it is.
 
     [SerializeField] GameObject _GameBoard; // Get the parent game object that holds the tiles that make up the game board.
-    [SerializeField] List<List<GameObject>> _GameBoardSquares = new List<List<GameObject>>(); // A 2D list that hold all tiles making a code version of the game board.
-
-    [SerializeField] List<Dictionary<GameObject, GameObject>> _TestTileHolder = new List<Dictionary<GameObject, GameObject>>();
+    [SerializeField] List<Coordinate> _Tiles = new List<Coordinate>(); // 2D list of tiles that can be seen in the inspector.
 
     const int _BoardSize = 8;
 
@@ -32,11 +30,7 @@ public class GameManager : MonoBehaviour
             Destroy(this); // Delete the duplicate GameManager
         }
         _Instance = this;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
         if (_Canvas == null)
         {
             _Canvas = FindObjectOfType<Canvas>();
@@ -49,7 +43,11 @@ public class GameManager : MonoBehaviour
         }
 
         GetBoardSquares();
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
         // Clear out the list of pieces on the board.
         _CurrentBlackPieces.Clear();
         _CurrentWhitePieces.Clear();
@@ -69,17 +67,19 @@ public class GameManager : MonoBehaviour
     // This function will fill the 2D list with each tile of the game board. This can then be used for moving the pieces.
     void GetBoardSquares()
     {
-        for (int letter = 0; letter < _BoardSize; letter++)
+        int count = 0;
+        List<GameObject> temp = new List<GameObject>();
+        foreach (Transform tile in _GameBoard.transform)
         {
-            List<GameObject> coordinates = new List<GameObject>();
-            Dictionary<GameObject, GameObject> Tile = new Dictionary<GameObject, GameObject>();
-            for (int number = 0; number < _BoardSize; number++)
+            count++;
+            temp.Add(tile.gameObject);
+
+            if (count == _BoardSize)
             {
-                coordinates.Add(_GameBoard.transform.GetChild(number).gameObject);
-                Tile.Add(_GameBoard.transform.GetChild(number).gameObject, null);
+                _Tiles.Add(new Coordinate(temp));
+                count = 0;
+                temp.Clear();
             }
-            _GameBoardSquares.Add(coordinates);
-            _TestTileHolder.Add(Tile);
         }
     }
 
@@ -114,46 +114,42 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Finds the tile in the GameBoardSquare 2D list.
+    /// Finds the tile in the List.
     /// </summary>
     /// <param name="searchTile">The tile to find.</param>
     /// <returns>Returns the tile object if it is found. Returns null if the object is not in the list.</returns>
     public GameObject FindTile(GameObject searchTile)
     {
-        foreach (var coordinateList in _GameBoardSquares)
+        foreach (Coordinate coord in _Tiles)
         {
-            foreach (var coordinate in coordinateList)
+            foreach (GameObject tile in coord._Tiles)
             {
-                if (searchTile.name == coordinate.name)
+                if (tile == searchTile)
                 {
-                    return coordinate;
+                    return tile;
                 }
             }
         }
         return null;
     }
+}
 
-    public void OccupyTile(GameObject piece, bool unOccupy =  false)
+/// <summary>
+/// This is just to make a 2D list that can be seen in the inspector for debugging.
+/// </summary>
+[System.Serializable]
+public struct Coordinate
+{
+    [SerializeField] public List<GameObject> _Tiles;
+
+    public Coordinate(List<GameObject> tiles)
     {
-        foreach (Dictionary<GameObject, GameObject> coord in _TestTileHolder)
+        _Tiles = new List<GameObject>();
+        foreach (GameObject tile in tiles)
         {
-            if (unOccupy)
-            {
-                coord.TryGetValue(piece, out GameObject tile);
-
-                if (tile != null)
-                {
-                    coord[tile] = null;
-                }
-                
-            }
-            else
-            {
-                coord[piece.GetComponent<BaseChessPiece>().currentTile] = piece;
-            }
+            _Tiles.Add(tile);
         }
     }
-
-    // Getter for the tiles that the pieces can access
-    public List<List<GameObject>> BoardSquares {  get { return _GameBoardSquares; } }
 }
+
+

@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 
 public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEndDragHandler
 {
@@ -23,21 +21,17 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
     {
         rectTransform = GetComponent<RectTransform>();
         defaultParent = rectTransform.parent;
-
-        /*if (currentTile != null)
-        {
-            rectTransform.SetParent(currentTile.transform);
-            rectTransform.anchoredPosition = Vector3.zero;
-            rectTransform.SetParent(defaultParent);
-        }*/
     }
 
     private void Start()
     {
         GameObject tile;
         tile = GameManager._Instance.FindTile(currentTile);
-
-        GameManager._Instance.OccupyTile(this.gameObject);
+        
+        if (tile.GetComponent<Tile>() != null)
+        {
+            tile.GetComponent<Tile>().BeOccupied(this.gameObject);
+        }
     }
 
     public void PlayersTurn(bool turnEnds = false)
@@ -67,7 +61,6 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
     {
         if (canMove)
         {
-
             rectTransform.SetParent(FindObjectOfType<Canvas>().transform);
 
             rectTransform.anchoredPosition += eventData.delta;
@@ -76,26 +69,28 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        RaycastHit2D hit2D = Physics2D.Raycast(transform.position, Vector2.down, 1f);
 
-        if (hit2D.collider == null)
-        {
-            return;
-        }
+        RaycastHit2D[] hit2Ds = Physics2D.RaycastAll(transform.position, Vector2.down, 1f);
 
-        if (hit2D.collider.CompareTag("Tile") == true)
+        foreach (RaycastHit2D hit2D in hit2Ds)
         {
-            rectTransform.SetParent(hit2D.collider.transform);
-            rectTransform.anchoredPosition = Vector3.zero;
-            rectTransform.SetParent(defaultParent);
+            Debug.Log(hit2D.collider ? hit2D.collider.name : hit2D.collider);
 
-            currentTile = hit2D.collider.gameObject;
-        }
-        else 
-        {
-            rectTransform.SetParent(currentTile.transform);
-            rectTransform.anchoredPosition = Vector3.zero;
-            rectTransform.SetParent(defaultParent);
+            // check if the piece moved to a tile.
+            if (hit2D.collider == null || !hit2D.collider.CompareTag("Tile"))
+            {
+                rectTransform.SetParent(currentTile.transform);
+                rectTransform.anchoredPosition = Vector3.zero;
+                rectTransform.SetParent(defaultParent);
+            }
+            else
+            {
+                rectTransform.SetParent(hit2D.collider.transform);
+                rectTransform.anchoredPosition = Vector3.zero;
+                rectTransform.SetParent(defaultParent);
+
+                currentTile = hit2D.collider.gameObject;
+            }
         }
     }
     /*
@@ -104,7 +99,10 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
 
     public void Capture(GameObject enemyPiece)
     {
+        if (enemyPiece.GetComponent<BaseChessPiece>() != null && enemyPiece.GetComponent<BaseChessPiece>().color != this.color)
+        {
 
+        }
     }
 
     public abstract void Move();

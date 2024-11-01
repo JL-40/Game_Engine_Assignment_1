@@ -10,7 +10,7 @@ public class Pawn : BaseChessPiece
 
    public override void Move()
     {
-
+        
     }
 
     /*
