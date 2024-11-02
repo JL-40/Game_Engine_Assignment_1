@@ -52,10 +52,9 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
 
     }
 
-    /*
-     * Interface Implementations
-     */
-
+    
+    // Interface Implementations
+    
     // Function that allows the player to drag and drop the piece.
     public void OnDrag(PointerEventData eventData)
     {
@@ -93,10 +92,9 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
             }
         }
     }
-    /*
-     * End of Interface Implementations
-     */
 
+    // End of Interface Implementations
+    
     public void Capture(GameObject enemyPiece)
     {
         if (enemyPiece.GetComponent<BaseChessPiece>() != null && enemyPiece.GetComponent<BaseChessPiece>().color != this.color)

@@ -83,6 +83,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Swaps the current player's turn to white. Disabling all black pieces ability to move and enabling all white pieces to move.
+    /// </summary>
     public void WhitePlayersTurn()
     {
         _CurrentPlayerTurn = PieceColor.White;
@@ -97,7 +100,9 @@ public class GameManager : MonoBehaviour
             blackPiece.GetComponent<BaseChessPiece>().canMove = false;
         }
     }
-
+    /// <summary>
+    /// Swaps the current player's turn to black. Disabling all white pieces ability to move and enabling all black pieces to move.
+    /// </summary>
     public void BlackPlayersTurn()
     {
         _CurrentPlayerTurn = PieceColor.Black;
