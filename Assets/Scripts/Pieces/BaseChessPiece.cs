@@ -60,8 +60,6 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
     {
         if (canMove)
         {
-            rectTransform.SetParent(FindObjectOfType<Canvas>().transform);
-
             rectTransform.anchoredPosition += eventData.delta;
         }
     }

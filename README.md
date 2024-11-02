@@ -15,5 +15,10 @@ I am recreating the game of chess and applying the Singleton Design Pattern, Com
 Chess sprites taken from https://greenchess.net/info.php?item=downloads
 
 ## Gererative AI Disclaimer
-I used ChatGPT to quickly find the correct keyword and functions in my ```OnEndDrag()``` function in my BaseChessPiece class. I have only copied the usage of the keyword and functions, but have changed the functionality of the response to fit the way I have designed my game and how I envision the game to function.
+I used ChatGPT as a glorified Google search engine, allowing me to type full questions and iterate to get the what I am looking for. For example, I needed to get a function that allows me to interact with my pieces with the mouse pointer clicks and ChatGPT gave me the function ```OnDrag(PointerEventData eventData)```. Due to the way I have designed my game, I had no choice but to modify the results returned to me such as for my ```OnEndDrag(PointerEventData eventData)``` function where I modified the use of raycasting to fit into my game. Deeper explanation on where I did this and how I changed it are below:
 
+### Dragging Pieces For The Player to Move Them.
+I asked ChatGPT how I can move game object by clicking and dragging them it returned the function ```OnDrag(PointerEventData eventData)``` from IDragHandler interface, however I modified the code to move the pieces with my mouse pointer and made sure it can only happen if it is the player's turn. The same was done with ```OnEndDrag(PointerEventData eventData)``` from IEndDragHandler but with collider detecting which will be explained below.
+
+### Snapping The Pieces to Tiles (And Checking For Other Pieces)
+I used ChatGPT to find the correct function to change my Raycast2D from only returning the first collider it hits to returning multiple (this is because it keeps returning the piece the ray came from which is useless). I added my own code for snapping by setting the parent of the UI object and resetting the rectTransform position then unparenting the object so it can be moved again. 
