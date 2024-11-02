@@ -92,12 +92,12 @@ public class GameManager : MonoBehaviour
 
         foreach (GameObject whitePiece in _CurrentWhitePieces)
         {
-            whitePiece.GetComponent<BaseChessPiece>().canMove = true;
+            whitePiece.GetComponent<BaseChessPiece>().PlayersTurn();
         }
 
         foreach (GameObject blackPiece in _CurrentBlackPieces)
         {
-            blackPiece.GetComponent<BaseChessPiece>().canMove = false;
+            blackPiece.GetComponent<BaseChessPiece>().PlayersTurn(false);
         }
     }
     /// <summary>
@@ -109,12 +109,12 @@ public class GameManager : MonoBehaviour
 
         foreach (GameObject blackPiece in _CurrentBlackPieces)
         {
-            blackPiece.GetComponent<BaseChessPiece>().canMove = true;
+            blackPiece.GetComponent<BaseChessPiece>().PlayersTurn();
         }
 
         foreach (GameObject whitePiece in _CurrentWhitePieces)
         {
-            whitePiece.GetComponent<BaseChessPiece>().canMove = false;
+            whitePiece.GetComponent<BaseChessPiece>().PlayersTurn(false);
         }
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,13 +21,18 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        defaultParent = rectTransform.parent;
+
+        defaultParent = GameObject.Find("Canvas").transform;
     }
 
     private void Start()
     {
-        GameObject tile;
-        tile = GameManager._Instance.FindTile(currentTile);
+        if (currentTile == null)
+        {
+            throw new System.Exception($"Missing Current Tile on {gameObject.name}.");
+        }
+
+        GameObject tile = GameManager._Instance.FindTile(currentTile);
         
         if (tile.GetComponent<Tile>() != null)
         {
@@ -34,17 +40,14 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         }
     }
 
-    public void PlayersTurn(bool turnEnds = false)
+    public void PlayersTurn(bool dontEndTurn = true)
     {
-        if (turnEnds && canMove)
+        if (!dontEndTurn)
         {
             canMove = false;
+            return;
         }
-
-        if (!canMove && !turnEnds)
-        {
-            canMove = true;
-        }
+        canMove = true;
     }
 
     public void Execute()
@@ -66,40 +69,96 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
-        RaycastHit2D[] hit2Ds = Physics2D.RaycastAll(transform.position, Vector2.down, 1f);
-
-        foreach (RaycastHit2D hit2D in hit2Ds)
+        // Do nothing if the piece cannot move
+        if (!canMove)
         {
-            Debug.Log(hit2D.collider ? hit2D.collider.name : hit2D.collider);
-
-            // check if the piece moved to a tile.
-            if (hit2D.collider == null || !hit2D.collider.CompareTag("Tile"))
-            {
-                rectTransform.SetParent(currentTile.transform);
-                rectTransform.anchoredPosition = Vector3.zero;
-                rectTransform.SetParent(defaultParent);
-            }
-            else
-            {
-                rectTransform.SetParent(hit2D.collider.transform);
-                rectTransform.anchoredPosition = Vector3.zero;
-                rectTransform.SetParent(defaultParent);
-
-                currentTile = hit2D.collider.gameObject;
-            }
+            return;
         }
+
+        RaycastHit2D[] hit2Ds = Physics2D.RaycastAll(transform.position, Vector2.down, 1f); // Get an array of colliders hit
+
+        // Checks the length of the array to see if a piece has been hit (tile is also occupied)
+        if (hit2Ds.Length > 2)
+        {
+            foreach(RaycastHit2D hit in hit2Ds)
+            {
+                if (hit.collider.GetComponent<Tile>())
+                {
+                    continue;
+                }
+
+                // Check if the piece is not the same color as this piece. Capture the piece.
+                if (!hit.collider.CompareTag(this.gameObject.tag))
+                {
+                    Capture(hit.collider.gameObject); // Capture the piece
+
+                    //PlayersTurn(false);
+
+                    return;
+                }
+            } 
+        }
+        else if (hit2Ds.Length > 1)
+        {
+            foreach (RaycastHit2D hit in hit2Ds)
+            {
+                if (hit.collider.gameObject.Equals(this.gameObject))
+                {
+                    continue;
+                }
+
+                // check if the piece moved to a tile.
+                if (hit.collider != null && hit.collider.CompareTag("Tile"))
+                {
+                    // Move to tile
+                    rectTransform.SetParent(hit.collider.transform);
+                    rectTransform.anchoredPosition = Vector3.zero;
+                    rectTransform.SetParent(defaultParent);
+
+                    currentTile = hit.collider.gameObject;
+
+                    //PlayersTurn(false);
+
+                    return;
+                }
+            }   
+        }
+
+        ResetTilePosition();
     }
 
     // End of Interface Implementations
     
     public void Capture(GameObject enemyPiece)
     {
+        // Double Check before capturing
         if (enemyPiece.GetComponent<BaseChessPiece>() != null && enemyPiece.GetComponent<BaseChessPiece>().color != this.color)
         {
+            // Move to new tile
+            rectTransform.SetParent(enemyPiece.GetComponent<BaseChessPiece>().currentTile.transform);
+            rectTransform.anchoredPosition = Vector3.zero;
+            rectTransform.SetParent(defaultParent);
 
+            currentTile = enemyPiece.GetComponent<BaseChessPiece>().currentTile;
+
+            Destroy(enemyPiece); // Remove enemy piece
+        }
+        else
+        {
+            ResetTilePosition();
         }
     }
 
     public abstract void Move();
+
+    /// <summary>
+    /// Resets the tile the piece was at. Cancels the movement of the piece.
+    /// </summary>
+    void ResetTilePosition()
+    {
+        // Reset position
+        rectTransform.SetParent(currentTile.transform);
+        rectTransform.anchoredPosition = Vector3.zero;
+        rectTransform.SetParent(defaultParent);
+    }
 }
