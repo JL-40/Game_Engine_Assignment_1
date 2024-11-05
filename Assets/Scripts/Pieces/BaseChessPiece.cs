@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEndDragHandler
+public abstract class BaseChessPiece : MonoBehaviour, Command, Observer, IDragHandler, IEndDragHandler
 {
     [SerializeField] protected MovementType movementType; // The type of movement the piece can perform.
     [SerializeField, Range(1, 8)] protected int moveSteps;  // The number of tiles the piece can move.
@@ -51,16 +51,10 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         }
         canMove = true;
     }
-
-    public void Execute()
-    {
-
-    }
-
     
     // Interface Implementations
     
-    // Function that allows the player to drag and drop the piece.
+    // Function that allows the player to drag the piece.
     public void OnDrag(PointerEventData eventData)
     {
         if (canMove)
@@ -115,8 +109,21 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         ResetTilePosition();
     }
 
+    /// <summary>
+    /// Resets the tile the piece was at. Cancels the movement of the piece.
+    /// </summary>
+    public void ResetTilePosition()
+    {
+        // Reset position
+        rectTransform.SetParent(currentTile.transform);
+        rectTransform.anchoredPosition = Vector3.zero;
+        rectTransform.SetParent(defaultParent);
+    }
+
+    public PieceColor Color { get { return color; } }
+
     // End of Interface Implementations
-    
+
     public void Capture(GameObject enemyPiece)
     {
         // Double Check before capturing
@@ -137,18 +144,9 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         }
     }
 
-    public abstract void Move();
+    public abstract List<GameObject> ValidMove();
 
-    /// <summary>
-    /// Resets the tile the piece was at. Cancels the movement of the piece.
-    /// </summary>
-    void ResetTilePosition()
-    {
-        // Reset position
-        rectTransform.SetParent(currentTile.transform);
-        rectTransform.anchoredPosition = Vector3.zero;
-        rectTransform.SetParent(defaultParent);
-    }
+    public abstract void Execute();
 
-    public PieceColor Color {  get { return color; } }
+    public abstract void Notify(Subject subject);
 }

@@ -137,6 +137,9 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+    public List<Coordinate> GetTiles { get { return _Tiles; } }
+
+    public int GetMaxBoardSize { get { return _BoardSize; } }
 }
 
 /// <summary>

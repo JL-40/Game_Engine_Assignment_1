@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Rook : BaseChessPiece
 {
-    public override void Move()
+    public override List<GameObject> ValidMove()
     {
-        
+        List<GameObject> validTiles = new List<GameObject>();
+
+        return validTiles;
+    }
+
+    public override void Execute()
+    {
+
     }
 }

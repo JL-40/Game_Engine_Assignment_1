@@ -95,7 +95,11 @@ MonoBehaviour:
   canMove: 0
   currentTile: {fileID: 0}
   isPromoted: 0
-  promotionList: []
+  promotionList:
+  - {fileID: 8475712395722443981, guid: 373bdce311cfd1f46a65c70283e19e72, type: 3}
+  - {fileID: 8475712395722443981, guid: 018dd739776519c4d9845aad98ae54c8, type: 3}
+  - {fileID: 8475712395722443981, guid: a123eeb69a88a0f46af35fe6d9f6cddf, type: 3}
+  - {fileID: 8475712395722443981, guid: 4d8f487644306b941b42035b0f07712a, type: 3}
 --- !u!61 &1576205663633842757
 BoxCollider2D:
   m_ObjectHideFlags: 0
