@@ -23,6 +23,15 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         rectTransform = GetComponent<RectTransform>();
 
         defaultParent = GameObject.Find("Canvas").transform;
+
+        if (color == PieceColor.White && !this.CompareTag("White"))
+        {
+            this.tag = "White";
+        }
+        else if (color == PieceColor.Black && !this.CompareTag("Black"))
+        {
+            this.tag = "Black";
+        }
     }
 
     private void Start()
@@ -30,13 +39,6 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         if (currentTile == null)
         {
             throw new System.Exception($"Missing Current Tile on {gameObject.name}.");
-        }
-
-        GameObject tile = GameManager._Instance.FindTile(currentTile);
-        
-        if (tile.GetComponent<Tile>() != null)
-        {
-            tile.GetComponent<Tile>().BeOccupied(this.gameObject);
         }
     }
 
@@ -77,51 +79,37 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
 
         RaycastHit2D[] hit2Ds = Physics2D.RaycastAll(transform.position, Vector2.down, 1f); // Get an array of colliders hit
 
-        // Checks the length of the array to see if a piece has been hit (tile is also occupied)
-        if (hit2Ds.Length > 2)
+        foreach (RaycastHit2D hit in hit2Ds)
         {
-            foreach(RaycastHit2D hit in hit2Ds)
+            if (hit.collider.gameObject.Equals(this.gameObject))
             {
-                if (hit.collider.GetComponent<Tile>())
-                {
-                    continue;
-                }
+                continue;
+            }
 
-                // Check if the piece is not the same color as this piece. Capture the piece.
-                if (!hit.collider.CompareTag(this.gameObject.tag))
-                {
-                    Capture(hit.collider.gameObject); // Capture the piece
-
-                    //PlayersTurn(false);
-
-                    return;
-                }
-            } 
-        }
-        else if (hit2Ds.Length > 1)
-        {
-            foreach (RaycastHit2D hit in hit2Ds)
+            // Check if the piece is not the same color as this piece. Capture the piece.
+            if (hit.collider.GetComponent<BaseChessPiece>() != null && hit.collider.GetComponent<BaseChessPiece>().Color != color)
             {
-                if (hit.collider.gameObject.Equals(this.gameObject))
-                {
-                    continue;
-                }
+                Capture(hit.collider.gameObject); // Capture the piece
 
-                // check if the piece moved to a tile.
-                if (hit.collider != null && hit.collider.CompareTag("Tile"))
-                {
-                    // Move to tile
-                    rectTransform.SetParent(hit.collider.transform);
-                    rectTransform.anchoredPosition = Vector3.zero;
-                    rectTransform.SetParent(defaultParent);
+                //PlayersTurn(false);
 
-                    currentTile = hit.collider.gameObject;
+                return;
+            }
 
-                    //PlayersTurn(false);
+            // check if the piece moved to a tile.
+            if (hit.collider != null && hit.collider.CompareTag("Tile") && hit2Ds.Length < 3)
+            {
+                // Move to tile
+                rectTransform.SetParent(hit.collider.transform);
+                rectTransform.anchoredPosition = Vector3.zero;
+                rectTransform.SetParent(defaultParent);
 
-                    return;
-                }
-            }   
+                currentTile = hit.collider.gameObject;
+
+                //PlayersTurn(false);
+
+                return;
+            }
         }
 
         ResetTilePosition();
@@ -132,7 +120,7 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
     public void Capture(GameObject enemyPiece)
     {
         // Double Check before capturing
-        if (enemyPiece.GetComponent<BaseChessPiece>() != null && enemyPiece.GetComponent<BaseChessPiece>().color != this.color)
+        if (enemyPiece.GetComponent<BaseChessPiece>() != null && enemyPiece.GetComponent<BaseChessPiece>().Color != this.color)
         {
             // Move to new tile
             rectTransform.SetParent(enemyPiece.GetComponent<BaseChessPiece>().currentTile.transform);
@@ -161,4 +149,6 @@ public abstract class BaseChessPiece : MonoBehaviour, Command, IDragHandler, IEn
         rectTransform.anchoredPosition = Vector3.zero;
         rectTransform.SetParent(defaultParent);
     }
+
+    public PieceColor Color {  get { return color; } }
 }
