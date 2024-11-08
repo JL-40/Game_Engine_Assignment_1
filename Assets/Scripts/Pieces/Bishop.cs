@@ -16,4 +16,9 @@ public class Bishop : BaseChessPiece
         
     }
 
+    public override void Notify(Subject subject)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

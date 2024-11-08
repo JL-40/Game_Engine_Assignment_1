@@ -15,4 +15,9 @@ public class King : BaseChessPiece
     {
 
     }
+
+    public override void Notify(Subject subject)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -18,6 +18,11 @@ public class Pawn : BaseChessPiece
         {
             foreach (GameObject tile in coors._Tiles)
             {
+                if (validTiles.Count == 1)
+                {
+                    return validTiles;
+                }
+
                 if (tile.name.Contains(tileLetter) && int.Parse($"{tile.name[1]}") > int.Parse($"{currentTile.name[1]}"))
                 {
                     validTiles.Add(tile);
