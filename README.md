@@ -63,7 +63,7 @@ classDiagram
 	Command <|-- PieceMovement : Implements Excecute()
 	Command : +Execute()
 	PieceMovement : +Movement()
-	Invoker --* Command : Calls Execute()
+	Invoker -- PieceMovement : Calls Execute()
 	Invoker : ExecuteCommand(Command)
 	
 ```
