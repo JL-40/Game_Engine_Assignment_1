@@ -55,8 +55,10 @@ The command desgin pattern was used for the movement of the chess pieces. By enc
 The following is a UML diagram using the Pawn as an example.
 ```mermaid
 classDiagram
+	BaseChessPiece : #pieceMovement:PieceMovement
 	BaseChessPiece : +OnEndDrag(PointerEventData eventData)
-	BaseChessPiece --|> Pawn
+	BaseChessPiece --|> Pawn : Inherits
+	Pawn : +OnEndDrag(PointerEventData eventData)
 	
 ```
 
