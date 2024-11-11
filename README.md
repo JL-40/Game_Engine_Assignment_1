@@ -57,8 +57,15 @@ The following is a UML diagram using the Pawn as an example.
 classDiagram
 	BaseChessPiece : #PieceMovement pieceMovement
 	BaseChessPiece : +OnEndDrag(PointerEventData eventData)
-	BaseChessPiece --|> Pawn : Inherits
-	Pawn : +OnEndDrag(PointerEventData eventData)
+	BaseChessPiece <|-- Pawn
+	Pawn -- Invoker : Runs ExecuteCommand(PieceMovement)
+	BaseChess *-- PieceMovement
+	Command <|-- PieceMovement
+	Command : +Execute()
+	PieceMovement : +Movement()
+	Invoker -- GameManager
+	Invoker --* Command : Calls Execute()
+	Invoker : ExecuteCommand(Command)
 	
 ```
 
