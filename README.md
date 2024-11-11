@@ -64,11 +64,12 @@ classDiagram
 	Command : +Execute()
 	PieceMovement : +Movement()
 	Invoker -- PieceMovement : Calls Execute()
-	Invoker : ExecuteCommand(Command)
+	Invoker : ExecuteCommand(Command command)
 	
 ```
 
 #### Explanation
+Since all chess pieces can move, the ```BaseChessPiece``` class has a variable that hold the ```PieceMovement``` class that will run the movement logic for all chess pieces. When the player stops dragging the pieces, the chess piece (in the diagram, it's the Pawn) will call the ```Invoker``` class's ```ExecuteCommand(Command command)``` method and pass the ```PieceMovement``` class as the command. The ```Invoker``` will call the ```PieceMovement```'s ```Execute``` method to move the pieces.
 
 ### Factory Pattern
 
