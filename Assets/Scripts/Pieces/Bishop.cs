@@ -11,12 +11,6 @@ public class Bishop : BaseChessPiece
 
         return validTiles;
     }
-
-    public override void Notify(Subject subject)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void OnEndDrag(PointerEventData eventData)
     {
         PieceMovement.Execute();

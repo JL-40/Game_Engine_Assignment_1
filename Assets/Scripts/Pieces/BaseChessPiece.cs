@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class BaseChessPiece : MonoBehaviour, Observer, IDragHandler, IEndDragHandler
+public abstract class BaseChessPiece : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     [SerializeField] protected MovementType movementType; // The type of movement the piece can perform.
     [SerializeField, Range(1, 8)] protected int moveSteps;  // The number of tiles the piece can move.
@@ -68,8 +68,6 @@ public abstract class BaseChessPiece : MonoBehaviour, Observer, IDragHandler, IE
     }
 
     public abstract List<GameObject> ValidMoves();
-
-    public abstract void Notify(Subject subject);
 
     /// <summary>
     /// Function that allows the player to drag the piece.

@@ -17,7 +17,7 @@ I used ChatGPT as a glorified Google search engine, allowing me to type full que
 ### ChatGPT For Examples and as a Reference.
 I have used ChatGPT as a reference for design patterns and asked it to provide me examples of desing patterns being implemented in Unity using Chess as the game. Due to the way I've designed my game, none of the examples or responses ChatGPT gave could've been copied even if I wanted to. The purpose was to get ideas or to help with properly implementing the design patterns and the use of ChatGPT was helpful in doing so. For transparency, the following are some prompt questions I asked ChatGPT:
 - In Unity, use the command design pattern to move chess pieces from one tile to another.
-- In unity, 
+- In unity, how do I use the observer design pattern to promote a chess pawn.
 
 ### Dragging Pieces For The Player to Move Them.
 I asked ChatGPT how I can move game object by clicking and dragging them it returned the function ```OnDrag(PointerEventData eventData)``` from IDragHandler interface, however I modified the code to move the pieces with my mouse pointer and made sure it can only happen if it is the player's turn. The same was done with ```OnEndDrag(PointerEventData eventData)``` from IEndDragHandler but with collider detecting which will be explained below.
@@ -46,7 +46,7 @@ void Awake()
 }
 ```
 #### Explanation
-I did this to ensure that there cannot be more than one ```GameManager```. I know that other examples shows that the ```_Instance = this``` is usually in an if statement that checks if the instance is null, however, I opted to reverse the logic as it fits in a programming style that reduces on if-else statements and nesting.
+I did this to ensure that there cannot be more than one ```GameManager```. I know that other examples shows that the ```_Instance = this``` is usually in an if statement that checks if the instance is null, however, I opted to reverse the logic as it fits in a programming style that reduces on if-else statements and nesting. This helps with ensuring there are not multiple ```GameManager```s overwritting data and also optimize code since each if-else takes computation time.
 
 ### Command Design Pattern
 The command desgin pattern was used for the movement of the chess pieces. By encapsulating the command to move the pieces I created I allowed other chess pieces to use the same logic with minor changes (valid tiles to move to).
@@ -70,6 +70,8 @@ classDiagram
 
 #### Explanation
 Since all chess pieces can move, the ```BaseChessPiece``` class has a variable that hold the ```PieceMovement``` class that will run the movement logic for all chess pieces. When the player stops dragging the pieces, the chess piece (in the diagram, it's the Pawn) will call the ```Invoker``` class's ```ExecuteCommand(Command command)``` method and pass the ```PieceMovement``` class as the command. The ```Invoker``` will call the ```PieceMovement```'s ```Execute``` method to move the pieces.
+
+This implementation helps communicate between the base class and subclasses which wouldn't be possible before. The diagram didn't show this, however, the BaseChessPiece only has general logic for movement, but the subclasses have the logic for valid moves that the ```BaseChessPiece``` needs to ensure the pieces are moving correctly.
 
 ### Factory Pattern
 

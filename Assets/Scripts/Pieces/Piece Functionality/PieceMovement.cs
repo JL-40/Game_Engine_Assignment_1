@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PieceMovement : Command
+public class PieceMovement : Command, Observer
 {
     [SerializeField] GameObject piece;
     BaseChessPiece chessPiece;
@@ -15,6 +15,24 @@ public class PieceMovement : Command
         piece = gameObject;
         chessPiece = piece.GetComponent<BaseChessPiece>();
         rectTransform = gameObject.GetComponent<RectTransform>();
+
+        if (piece.name.Contains("Pawn"))
+        {
+            piece.GetComponent<Pawn>().SubscribeToSubject(this);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (piece != null && piece.name.Contains("Pawn"))
+        {
+            piece.GetComponent<Pawn>().UnsubscribeToSubject(this);
+        }
+    }
+
+    public void Notify(Subject subject)
+    {
+        
     }
 
     public void Execute()
@@ -67,6 +85,7 @@ public class PieceMovement : Command
                 // check if the piece moved to a tile.
                 if (hitCollider != null && hitCollider.CompareTag("Tile") && hit2Ds.Length < 3)
                 {
+                    // Check for Pawns Only
                     if (chessPiece.name.Contains("Pawn"))
                     {
                         string forwardTileName = $"{chessPiece.currentTile.name[0]}{(int)(chessPiece.currentTile.name[1] - '0') + 1}";
@@ -74,6 +93,8 @@ public class PieceMovement : Command
                         {
                             continue;
                         }
+
+                        piece.GetComponent<Pawn>().CheckForPromotion();
                     }
 
                     // Move to tile

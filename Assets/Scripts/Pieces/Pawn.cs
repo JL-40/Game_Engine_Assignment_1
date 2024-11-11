@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class Pawn : BaseChessPiece
+public class Pawn : BaseChessPiece, Subject
 {
     public bool isPromoted = false;
     [SerializeField] List<GameObject> promotionList = new List<GameObject>();
+
+
+    [SerializeField] List<Observer> observers = new List<Observer>();
+    [SerializeField] bool isDirty = false;
 
     protected override void Awake()
     {
@@ -15,53 +19,6 @@ public class Pawn : BaseChessPiece
 
         pieceMovement = new PieceMovement(this.gameObject);
     }
-
-    /// <summary>
-    /// Function that promotes the pawn into other pieces excluding the King
-    /// </summary>
-    public void Promote()
-    {
-        if (isPromoted == false)
-        {
-            isPromoted = true;
-        }
-
-        GameObject promotedPawn = null;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)) // Promote to Rook
-        {
-            promotedPawn = Instantiate(promotionList[0]);
-            promotedPawn.name = $"{promotionList[0].name}";
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) // Promote to Knight
-        {
-            promotedPawn = Instantiate(promotionList[1]);
-            promotedPawn.name = $"{promotionList[1].name}";
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) // Promote to Bishop
-        {
-            promotedPawn = Instantiate(promotionList[2]);
-            promotedPawn.name = $"{promotionList[2].name}";
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) //Promote to Queen
-        {
-            promotedPawn = Instantiate(promotionList[3]);
-            promotedPawn.name = $"{promotionList[3].name}";
-        }
-
-        // Error, no promoted pawn
-        if (promotedPawn == null)
-        {
-            return;
-        }
-
-        promotedPawn.name += " (Promoted)";
-
-        BaseChessPiece promotedPawnBase = promotedPawn.GetComponent<BaseChessPiece>();
-        promotedPawnBase.currentTile = this.currentTile;
-        promotedPawnBase.PieceMovement.SetTilePosition(currentTile);
-    }
-
 
     public override List<GameObject> ValidMoves()
     {
@@ -103,7 +60,6 @@ public class Pawn : BaseChessPiece
         return validTiles;
     }
 
-
     public override void OnEndDrag(PointerEventData eventData)
     {
         GameManager._Instance.CommandInvoker.ExecuteCommand(PieceMovement);
@@ -120,8 +76,78 @@ public class Pawn : BaseChessPiece
         }
     }
 
-    public override void Notify(Subject subject)
+    public void SubscribeToSubject(Observer observer)
     {
-        throw new System.NotImplementedException();
+       observers.Add(observer);
     }
+
+    public void UnsubscribeToSubject(Observer observer)
+    {
+        observers.Remove(observer);
+    }
+
+    public void NotifyObservers()
+    {
+        if (isDirty)
+        {
+            foreach (Observer observer in observers)
+            {
+                observer.Notify(this);
+            }
+
+            isDirty = false;
+        }  
+    }
+
+    public void CheckForPromotion()
+    {
+        if (currentTile.name.Contains("1") || currentTile.name.Contains($"{GameManager._Instance.GetMaxBoardSize}"))
+        {
+            isDirty = true;
+        }
+    }
+
+    /// <summary>
+    /// Function that promotes the pawn into other pieces excluding the King
+    /// </summary>
+    public void PromotePawn()
+    {
+        GameManager._Instance._PromotionText.gameObject.SetActive(true);
+
+        GameObject promotedPawn = null;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) // Promote to Rook
+        {
+            promotedPawn = Instantiate(promotionList[0]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) // Promote to Knight
+        {
+            promotedPawn = Instantiate(promotionList[1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) // Promote to Bishop
+        {
+            promotedPawn = Instantiate(promotionList[2]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) //Promote to Queen
+        {
+            promotedPawn = Instantiate(promotionList[3]);
+        }
+
+        // Error, no promoted pawn
+        if (promotedPawn == null)
+        {
+            return;
+        }
+
+        promotedPawn.name = $"{this.gameObject.name} (Promoted)";
+
+        BaseChessPiece promotedPawnBase = promotedPawn.GetComponent<BaseChessPiece>();
+        promotedPawnBase.currentTile = this.currentTile;
+        promotedPawnBase.PieceMovement.SetTilePosition(currentTile);
+
+        Destroy(this.gameObject);
+
+        GameManager._Instance._PromotionText.gameObject.SetActive(false);
+    }
+
 }

@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager _Instance; // Singleton.
 
     [SerializeField] Canvas _Canvas;
+    [SerializeField] public TMP_Text _PromotionText;
 
     [SerializeField] PieceColor _CurrentPlayerTurn = PieceColor.White; // Tracks which player's turn it is.
 
@@ -43,6 +41,11 @@ public class GameManager : MonoBehaviour
             _Canvas = FindObjectOfType<Canvas>();
         }
 
+        if (_PromotionText == null)
+        {
+            _PromotionText = GameObject.Find("PromotionText").GetComponent<TMP_Text>();
+        }
+
         // Finds the game board object if I didn't add it though the inspector (prevents errors).
         if (_GameBoard == null)
         {
@@ -63,6 +66,8 @@ public class GameManager : MonoBehaviour
         _CurrentBlackPieces = GameObject.FindGameObjectsWithTag("Black").ToList();
 
         WhitePlayersTurn();
+
+        _PromotionText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

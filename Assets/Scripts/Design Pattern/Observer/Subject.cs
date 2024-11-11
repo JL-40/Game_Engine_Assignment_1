@@ -2,25 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Subject
+public interface Subject
 {
-    private readonly List<Observer> _observers = new List<Observer>();
+    public abstract void SubscribeToSubject(Observer observer);
 
-    protected void Attach(Observer observer)
-    {
-        _observers.Add(observer);
-    }
+    public abstract void UnsubscribeToSubject(Observer observer);
 
-    protected void Detach(Observer observer)
-    {
-        _observers.Remove(observer);
-    }
-
-    protected void NotifyObservers()
-    {
-        foreach (Observer observer in _observers)
-        {
-            observer.Notify(this);
-        }
-    }
+    public abstract void NotifyObservers();
 }
