@@ -59,7 +59,7 @@ classDiagram
 	BaseChessPiece : +OnEndDrag(PointerEventData eventData)
 	BaseChessPiece <|-- Pawn
 	Pawn -- Invoker : Runs ExecuteCommand(PieceMovement)
-	BaseChess *-- PieceMovement
+	BaseChessPiece *-- PieceMovement
 	Command <|-- PieceMovement
 	Command : +Execute()
 	PieceMovement : +Movement()
