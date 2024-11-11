@@ -54,7 +54,7 @@ The command desgin pattern was used for the movement of the chess pieces. By enc
 #### Diagram
 ```mermaid
 classDiagram
-	BaseChessPiece : OnEndDrag(PointerEventData eventData)
+	BaseChessPiece : + OnEndDrag(PointerEventData eventData)
 	
 ```
 
