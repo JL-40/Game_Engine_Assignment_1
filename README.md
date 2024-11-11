@@ -52,9 +52,11 @@ I did this to ensure that there cannot be more than one ```GameManager```. I kno
 The command desgin pattern was used for the movement of the chess pieces. By encapsulating the command to move the pieces I created I allowed other chess pieces to use the same logic with minor changes (valid tiles to move to).
 
 #### Diagram
+The following is a UML diagram using the Pawn as an example.
 ```mermaid
 classDiagram
-	BaseChessPiece : + OnEndDrag(PointerEventData eventData)
+	BaseChessPiece : +OnEndDrag(PointerEventData eventData)
+	Pawn --* BaseChessPiece
 	
 ```
 
