@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Rook : BaseChessPiece
 {
-    public override List<GameObject> ValidMove()
+    public override List<GameObject> ValidMoves()
     {
         List<GameObject> validTiles = new List<GameObject>();
 
@@ -26,13 +27,13 @@ public class Rook : BaseChessPiece
         return validTiles;
     }
 
-    public override void Execute()
-    {
-
-    }
-
     public override void Notify(Subject subject)
     {
         throw new System.NotImplementedException();
+    }
+
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+        PieceMovement.Execute();
     }
 }

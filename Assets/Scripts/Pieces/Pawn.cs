@@ -1,36 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 public class Pawn : BaseChessPiece
 {
     public bool isPromoted = false;
     [SerializeField] List<GameObject> promotionList = new List<GameObject>();
 
-
-   public override List<GameObject> ValidMove()
+    protected override void Awake()
     {
-        List<GameObject> validTiles = new List<GameObject>();
+        base.Awake();
 
-        string tileLetter = $"{currentTile.name[0]}";
-
-        foreach (Coordinate coors in GameManager._Instance.GetTiles)
-        {
-            foreach (GameObject tile in coors._Tiles)
-            {
-                if (validTiles.Count == 1)
-                {
-                    return validTiles;
-                }
-
-                if (tile.name.Contains(tileLetter) && int.Parse($"{tile.name[1]}") > int.Parse($"{currentTile.name[1]}"))
-                {
-                    validTiles.Add(tile);
-                }
-            }
-        }
-
-        return validTiles;
+        pieceMovement = new PieceMovement(this.gameObject);
     }
 
     /// <summary>
@@ -44,7 +27,7 @@ public class Pawn : BaseChessPiece
         }
 
         GameObject promotedPawn = null;
-        
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) // Promote to Rook
         {
             promotedPawn = Instantiate(promotionList[0]);
@@ -76,15 +59,65 @@ public class Pawn : BaseChessPiece
 
         BaseChessPiece promotedPawnBase = promotedPawn.GetComponent<BaseChessPiece>();
         promotedPawnBase.currentTile = this.currentTile;
-        promotedPawnBase.ResetTilePosition();
+        promotedPawnBase.PieceMovement.SetTilePosition(currentTile);
     }
 
-    /// <summary>
-    /// Execute Promotion
-    /// </summary>
-    public override void Execute()
+
+    public override List<GameObject> ValidMoves()
     {
-        Promote();
+        List<GameObject> validTiles = new List<GameObject>();
+
+        char currLetter = currentTile.name[0];
+        int currNumber = currentTile.name[1] - '0';
+
+        List<string> validTileNames = new List<string>();
+
+        // Ensures we don't try to get a row number beyond the size of the board. Max is 8 for standard chess.
+        if (currNumber + 1 <= GameManager._Instance.GetMaxBoardSize)
+        {
+            validTileNames.Add($"{currLetter}{currNumber + 1}");
+        }
+
+        // For left-forward-diagonal tiles
+        if (currLetter != 'A' && currNumber + 1 <= GameManager._Instance.GetMaxBoardSize)
+        {
+            validTileNames.Add($"{(char)(currLetter-1)}{currNumber + 1}");
+        }
+
+        // For right-forward-diagonal tiles
+        if (currLetter != 'H' && currNumber + 1 <= GameManager._Instance.GetMaxBoardSize)
+        {
+            validTileNames.Add($"{(char)(currLetter + 1)}{currNumber + 1}");
+        }
+
+        foreach (string searchName in validTileNames)
+        {
+           validTiles.Add(
+               GameManager._Instance.FindTile(
+                   GameObject.Find(searchName)
+                   )
+               );
+
+        }
+
+        return validTiles;
+    }
+
+
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+        GameManager._Instance.CommandInvoker.ExecuteCommand(PieceMovement);
+    }
+
+    public override void Capture(GameObject enemyPiece)
+    {
+        string enemyTileName = enemyPiece.GetComponent<BaseChessPiece>().currentTile.name;
+
+        // Ensures that the tile must be diagonal to capture for pawns.
+        if ((enemyTileName[0] == currentTile.name[0] - 1 || enemyTileName[0] == currentTile.name[0] + 1) && enemyTileName[1] == currentTile.name[1] + 1)
+        {
+            base.Capture(enemyPiece);
+        }
     }
 
     public override void Notify(Subject subject)

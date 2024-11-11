@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] List<GameObject> _CurrentWhitePieces = new List<GameObject>();
     [SerializeField] List<GameObject> _CurrentBlackPieces = new List<GameObject>();
+
+    [SerializeField] Invoker _Invoker;
     private void Awake()
     {
         // Write the singleton behaviour
@@ -30,6 +32,11 @@ public class GameManager : MonoBehaviour
             Destroy(this); // Delete the duplicate GameManager
         }
         _Instance = this;
+
+        if (_Invoker == null)
+        {
+            _Invoker = GetComponent<Invoker>();
+        }
 
         if (_Canvas == null)
         {
@@ -140,6 +147,8 @@ public class GameManager : MonoBehaviour
     public List<Coordinate> GetTiles { get { return _Tiles; } }
 
     public int GetMaxBoardSize { get { return _BoardSize; } }
+    
+    public Invoker CommandInvoker { get { return _Invoker; } } 
 }
 
 /// <summary>
