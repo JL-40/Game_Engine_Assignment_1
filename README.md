@@ -56,7 +56,7 @@ The following is a UML diagram using the Pawn as an example.
 ```mermaid
 classDiagram
 	BaseChessPiece : +OnEndDrag(PointerEventData eventData)
-	Pawn --* BaseChessPiece
+	BaseChessPiece --|> Pawn
 	
 ```
 
