@@ -23,10 +23,12 @@ public class GameManager : MonoBehaviour, Observer
     [SerializeField] List<GameObject> _CurrentBlackPieces = new List<GameObject>();
 
 
-    // COMMAND
+    [Header("Command")]
+    [Space(10)]
     [SerializeField] Invoker _Invoker;
 
-    // OBSERVER
+    [Header("Observer")]
+    [Space(10)]
     [SerializeField] List<Pawn> _Pawns = new List<Pawn>();
     [SerializeField] List<GameObject> _WhitePromotionList = new List<GameObject>();
     [SerializeField] List<GameObject> _BlackPromotionList = new List<GameObject>();
