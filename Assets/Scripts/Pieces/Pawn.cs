@@ -19,7 +19,18 @@ public class Pawn : BaseChessPiece, Subject
 
     void Update()
     {
-        CheckForPromotion();
+        // Toggle using dirty flag
+        if (!useDirtyFlag)
+        {
+            CheckForPromotion();
+            return; // Exit
+        }
+
+        if (!IsDirty)
+        {
+            CheckForPromotion();
+        }
+
     }
 
     public override List<GameObject> ValidMoves()

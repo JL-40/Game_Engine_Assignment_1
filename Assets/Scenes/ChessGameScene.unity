@@ -2707,6 +2707,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 1802202293}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5322,6 +5326,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 887934626}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6253,6 +6261,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 1998602058}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6363,6 +6375,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 845083705}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6849,6 +6865,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 561309726}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10454,6 +10474,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 1163742569}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11445,6 +11469,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 1148340055}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11918,6 +11946,10 @@ PrefabInstance:
       propertyPath: currentTile
       value: 
       objectReference: {fileID: 958412452}
+    - target: {fileID: 2651806586747558290, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
+      propertyPath: useDirtyFlag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3882644756778773486, guid: f4088be2d3576c34fa26d787685b676e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
