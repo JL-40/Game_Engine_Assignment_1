@@ -80,18 +80,24 @@ This implementation helps communicate between the base class and subclasses whic
 #### Explanation
 
 ### Observer Pattern
+The ```GameManager``` has been turned into an Observer that is subscribed to the ```Pawn``` (Subject) so that the ```GameManager```can promote the pawn.
 
 #### Pseudocode/Diagram
 
+
 #### Explanation
+
 
 ## Explanation on Deliverables - Course Project
 
 ### Assignment 1 Improvements
+In truth, due to lack of everything in my Assignment 1, the only improvements I could make was actually completing Assignment 1.
 
 ### Optimization Design Patterns
+I modified the Pawn and GameManager so that the Observer Design Pattern also functions as the Dirty Flag.
 
 #### Pseudocode/Diagram
+
 
 #### Explanation
 
