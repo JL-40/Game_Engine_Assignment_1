@@ -5,6 +5,12 @@ using UnityEngine.EventSystems;
 
 public class Knight : BaseChessPiece
 {
+    protected override void Awake()
+    {
+        base.Awake();
+
+        pieceMovement = new PieceMovement(this.gameObject);
+    }
     public override List<GameObject> ValidMoves()
     {
         List<GameObject> validTiles = new List<GameObject>();

@@ -44,11 +44,13 @@ public abstract class BaseChessPiece : MonoBehaviour, IDragHandler, IEndDragHand
         canMove = true;
     }
 
+    // GETTERS
     public PieceColor ChessColor { get { return color; } }
     public bool CanMove { get { return canMove; } }
 
     public PieceMovement PieceMovement { get { return pieceMovement; } }
 
+    // MOVE AND CAPTURE
     public virtual void Capture(GameObject enemyPiece)
     {
         // Double Check before capturing
@@ -69,6 +71,7 @@ public abstract class BaseChessPiece : MonoBehaviour, IDragHandler, IEndDragHand
 
     public abstract List<GameObject> ValidMoves();
 
+    // PLAYER INTERACTION
     /// <summary>
     /// Function that allows the player to drag the piece.
     /// </summary>

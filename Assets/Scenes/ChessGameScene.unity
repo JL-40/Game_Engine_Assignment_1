@@ -2859,6 +2859,17 @@ MonoBehaviour:
   _CurrentWhitePieces: []
   _CurrentBlackPieces: []
   _Invoker: {fileID: 0}
+  _Pawns: []
+  _WhitePromotionList:
+  - {fileID: 8475712395722443981, guid: 373bdce311cfd1f46a65c70283e19e72, type: 3}
+  - {fileID: 8475712395722443981, guid: 018dd739776519c4d9845aad98ae54c8, type: 3}
+  - {fileID: 8475712395722443981, guid: a123eeb69a88a0f46af35fe6d9f6cddf, type: 3}
+  - {fileID: 8475712395722443981, guid: 4d8f487644306b941b42035b0f07712a, type: 3}
+  _BlackPromotionList:
+  - {fileID: 8475712395722443981, guid: bc815e461ece72a45bf5ce71bddb3b4e, type: 3}
+  - {fileID: 8475712395722443981, guid: d31f1ecbf5c771b4cb6aef2e2aa349cc, type: 3}
+  - {fileID: 8475712395722443981, guid: 47af030abc812f44cb37742c1a97da57, type: 3}
+  - {fileID: 8475712395722443981, guid: 0707d54bc89f00846a71b0187a065bad, type: 3}
 --- !u!4 &629585216
 Transform:
   m_ObjectHideFlags: 0
@@ -2980,7 +2991,7 @@ PrefabInstance:
       objectReference: {fileID: 1669287930}
     - target: {fileID: 8475712395722443981, guid: 47af030abc812f44cb37742c1a97da57, type: 3}
       propertyPath: m_Name
-      value: BlackBiship
+      value: BlackBishop
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3651,7 +3662,7 @@ PrefabInstance:
       objectReference: {fileID: 448431519}
     - target: {fileID: 8475712395722443981, guid: a123eeb69a88a0f46af35fe6d9f6cddf, type: 3}
       propertyPath: m_Name
-      value: RightWhiteBiship
+      value: RightWhiteBishop
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6214,7 +6225,7 @@ PrefabInstance:
       objectReference: {fileID: 32223189}
     - target: {fileID: 8475712395722443981, guid: a123eeb69a88a0f46af35fe6d9f6cddf, type: 3}
       propertyPath: m_Name
-      value: LeftWhiteBiship
+      value: LeftWhiteBishop
       objectReference: {fileID: 0}
     - target: {fileID: 8475712395722443981, guid: a123eeb69a88a0f46af35fe6d9f6cddf, type: 3}
       propertyPath: m_Layer

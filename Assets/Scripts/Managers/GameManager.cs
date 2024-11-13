@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using System.Diagnostics;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, Observer
 {
     public static GameManager _Instance; // Singleton.
 
@@ -21,7 +22,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<GameObject> _CurrentWhitePieces = new List<GameObject>();
     [SerializeField] List<GameObject> _CurrentBlackPieces = new List<GameObject>();
 
+
+    // COMMAND
     [SerializeField] Invoker _Invoker;
+
+    // OBSERVER
+    [SerializeField] List<Pawn> _Pawns = new List<Pawn>();
+    [SerializeField] List<GameObject> _WhitePromotionList = new List<GameObject>();
+    [SerializeField] List<GameObject> _BlackPromotionList = new List<GameObject>();
+
     private void Awake()
     {
         // Write the singleton behaviour
@@ -68,6 +77,8 @@ public class GameManager : MonoBehaviour
         WhitePlayersTurn();
 
         _PromotionText.gameObject.SetActive(false);
+
+        GetAllPawns();
     }
 
     // Update is called once per frame
@@ -153,9 +164,100 @@ public class GameManager : MonoBehaviour
 
     public int GetMaxBoardSize { get { return _BoardSize; } }
     
-    public Invoker CommandInvoker { get { return _Invoker; } } 
+
+    // COMMAND
+    public Invoker CommandInvoker { get { return _Invoker; } }
+
+    // OBSERVER
+    void OnDestroy()
+    {
+        if (_Pawns.Count != 0)
+        {
+            foreach (Pawn pawn in _Pawns)
+            {
+                pawn.UnsubscribeToSubject(this);
+            }
+        }
+    }
+
+    public void Notify(Subject subject)
+    {
+        if (subject is Pawn pawn)
+        {
+            PromotePawn(pawn);
+        }
+    }
+
+    public void NotifyDirtyFlag(Subject subject)
+    {
+        if (subject is Pawn pawn && pawn.IsDirty)
+        {
+            PromotePawn(pawn);
+        }
+    }
+
+    /// <summary>
+    /// Gets all pawn pieces to subscribe too
+    /// </summary>
+    void GetAllPawns()
+    {
+        foreach (Pawn pawn in GameObject.FindObjectsOfType<Pawn>())
+        {
+            pawn.SubscribeToSubject(this);
+            _Pawns.Add(pawn);
+        }
+    }
+
+    /// <summary>
+    /// Function that promotes the pawn into other pieces excluding the King
+    /// </summary>
+    public void PromotePawn(Pawn pawn)
+    {
+        GameManager._Instance._PromotionText.gameObject.SetActive(true);
+
+        GameObject promotedPawn = null;
+
+        // Input to promote pawn
+        if (Input.GetKeyDown(KeyCode.Alpha1)) // Promote to Rook
+        {
+            promotedPawn = Instantiate(pawn.ChessColor == PieceColor.White ? _WhitePromotionList[0] : _BlackPromotionList[0]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) // Promote to Knight
+        {
+            promotedPawn = Instantiate(pawn.ChessColor == PieceColor.White ? _WhitePromotionList[1] : _BlackPromotionList[1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) // Promote to Bishop
+        {
+            promotedPawn = Instantiate(pawn.ChessColor == PieceColor.White ? _WhitePromotionList[2] : _BlackPromotionList[2]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) //Promote to Queen
+        {
+            promotedPawn = Instantiate(pawn.ChessColor == PieceColor.White ? _WhitePromotionList[3] : _BlackPromotionList[3]);
+        }
+
+        // Error, no promoted pawn
+        if (promotedPawn == null)
+        {
+            return;
+        }
+
+        // Set up promoted pawn.
+        promotedPawn.name = $"{pawn.gameObject.name} (Promoted)";
+
+        BaseChessPiece promotedPawnBase = promotedPawn.GetComponent<BaseChessPiece>();
+        promotedPawnBase.currentTile = pawn.currentTile;
+
+        promotedPawnBase.PieceMovement.SetTilePosition(pawn.currentTile);
+
+        Destroy(pawn.gameObject); // Destroy pawn
+
+        _PromotionText.gameObject.SetActive(false);
+    }
+
 }
 
+
+// FOR SERIALIZABLE 2D LIST
 /// <summary>
 /// This is just to make a 2D list that can be seen in the inspector for debugging.
 /// </summary>

@@ -9,4 +9,5 @@ public interface Subject
     public abstract void UnsubscribeToSubject(Observer observer);
 
     public abstract void NotifyObservers();
+    public abstract void NotifyObserversDirtyFlag();
 }

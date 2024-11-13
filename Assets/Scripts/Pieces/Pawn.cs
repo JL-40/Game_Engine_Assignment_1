@@ -6,18 +6,20 @@ using UnityEngine.EventSystems;
 
 public class Pawn : BaseChessPiece, Subject
 {
-    public bool isPromoted = false;
-    [SerializeField] List<GameObject> promotionList = new List<GameObject>();
-
-
     [SerializeField] List<Observer> observers = new List<Observer>();
     [SerializeField] bool isDirty = false;
+    [SerializeField] bool useDirtyFlag = false;
 
     protected override void Awake()
     {
         base.Awake();
 
         pieceMovement = new PieceMovement(this.gameObject);
+    }
+
+    void Update()
+    {
+        CheckForPromotion();
     }
 
     public override List<GameObject> ValidMoves()
@@ -38,7 +40,7 @@ public class Pawn : BaseChessPiece, Subject
         // For left-forward-diagonal tiles
         if (currLetter != 'A' && currNumber + 1 <= GameManager._Instance.GetMaxBoardSize)
         {
-            validTileNames.Add($"{(char)(currLetter-1)}{currNumber + 1}");
+            validTileNames.Add($"{(char)(currLetter - 1)}{currNumber + 1}");
         }
 
         // For right-forward-diagonal tiles
@@ -49,11 +51,11 @@ public class Pawn : BaseChessPiece, Subject
 
         foreach (string searchName in validTileNames)
         {
-           validTiles.Add(
-               GameManager._Instance.FindTile(
-                   GameObject.Find(searchName)
-                   )
-               );
+            validTiles.Add(
+                GameManager._Instance.FindTile(
+                    GameObject.Find(searchName)
+                    )
+                );
 
         }
 
@@ -76,9 +78,10 @@ public class Pawn : BaseChessPiece, Subject
         }
     }
 
+    // OBSERVER
     public void SubscribeToSubject(Observer observer)
     {
-       observers.Add(observer);
+        observers.Add(observer);
     }
 
     public void UnsubscribeToSubject(Observer observer)
@@ -88,66 +91,42 @@ public class Pawn : BaseChessPiece, Subject
 
     public void NotifyObservers()
     {
-        if (isDirty)
+        foreach (Observer observer in observers)
         {
-            foreach (Observer observer in observers)
-            {
-                observer.Notify(this);
-            }
-
-            isDirty = false;
-        }  
+            observer.Notify(this);
+        }
     }
 
     public void CheckForPromotion()
     {
         if (currentTile.name.Contains("1") || currentTile.name.Contains($"{GameManager._Instance.GetMaxBoardSize}"))
         {
-            isDirty = true;
+            if (useDirtyFlag)
+            {
+                isDirty = true;
+                NotifyObserversDirtyFlag();
+            }
+
+            NotifyObservers();
         }
     }
 
-    /// <summary>
-    /// Function that promotes the pawn into other pieces excluding the King
-    /// </summary>
-    public void PromotePawn()
+    // DIRTY FLAG
+    public void NotifyObserversDirtyFlag()
     {
-        GameManager._Instance._PromotionText.gameObject.SetActive(true);
-
-        GameObject promotedPawn = null;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)) // Promote to Rook
+        if (isDirty)
         {
-            promotedPawn = Instantiate(promotionList[0]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) // Promote to Knight
-        {
-            promotedPawn = Instantiate(promotionList[1]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) // Promote to Bishop
-        {
-            promotedPawn = Instantiate(promotionList[2]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) //Promote to Queen
-        {
-            promotedPawn = Instantiate(promotionList[3]);
-        }
+            foreach (Observer observer in observers)
+            {
+                observer.NotifyDirtyFlag(this);
+            }
 
-        // Error, no promoted pawn
-        if (promotedPawn == null)
-        {
-            return;
+            isDirty = false;
         }
-
-        promotedPawn.name = $"{this.gameObject.name} (Promoted)";
-
-        BaseChessPiece promotedPawnBase = promotedPawn.GetComponent<BaseChessPiece>();
-        promotedPawnBase.currentTile = this.currentTile;
-        promotedPawnBase.PieceMovement.SetTilePosition(currentTile);
-
-        Destroy(this.gameObject);
-
-        GameManager._Instance._PromotionText.gameObject.SetActive(false);
     }
 
+    public bool IsDirty
+    {
+        get { return isDirty; }
+    }
 }
