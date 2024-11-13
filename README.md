@@ -86,7 +86,7 @@ The ```GameManager``` has been turned into an Observer that is subscribed to the
 ![alt text](https://github.com/JL-40/Game_Engine_Assignment_1/blob/CourseProject/_ReadmeReportImages/ObserverDiagram.jpg?raw=true)
 
 #### Explanation
-
+To explain the diagram above, The ```Pawn``` runs ```CheckForPromotion()``` every frame in its ```Update()``` function. If the ```Pawn``` is at Rank 1 or 8 (A1, B1, C1, ... or A8, B8, C8, ...), the ```Pawn``` wil notify the ```GameManager``` (the observer) and runs the ```PromotePawn(Pawn pawn)``` function to promote the pawn.
 
 ## Explanation on Deliverables - Course Project
 
