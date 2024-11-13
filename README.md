@@ -97,9 +97,10 @@ In truth, due to lack of everything in my Assignment 1, the only improvements I 
 I modified the Pawn and GameManager so that the Observer Design Pattern also functions as the Dirty Flag.
 
 #### Pseudocode/Diagram
-
+![alt text](https://github.com/JL-40/Game_Engine_Assignment_1/blob/CourseProject/_ReadmeReportImages/DirtyFlagObserverDiagram.jpg?raw=true)
 
 #### Explanation
+The Observer Pattern was modified so that if the ```Pawn``` is not dirty, then it runs ```CheckForPromotion()```, otherwise the program exists. I would like to mention that the diagram is not entirely accurate to the actual functionality of the ```Update()``` function because I have a toggle for using dirty flag for performance analysis.
 
 ### Plugin/DLL
 
