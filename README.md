@@ -83,7 +83,7 @@ This implementation helps communicate between the base class and subclasses whic
 The ```GameManager``` has been turned into an Observer that is subscribed to the ```Pawn``` (Subject) so that the ```GameManager```can promote the pawn.
 
 #### Pseudocode/Diagram
-[!alt](https://github.com/JL-40/Game_Engine_Assignment_1/blob/CourseProject/_Readme%20Report%20Images/ObserverDiagram.jpg)
+[!alt text](https://github.com/JL-40/Game_Engine_Assignment_1/blob/CourseProject/_Readme%20Report%20Images/ObserverDiagram.jpg)
 
 #### Explanation
 
